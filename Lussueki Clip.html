@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Lussueki Clip</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050505; --surface: #121214; --surface-2: #19191c;
+    --text: #f2f2f4; --text-muted: #9a9aa2; --border: #262629;
+    --red: #e50914; --red-soft: #ff6b6b;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  :root[data-theme="light"] {
+    --bg: #fbfbfc; --surface: #f1f1f3; --surface-2: #ffffff;
+    --text: #141416; --text-muted: #5c5c64; --border: #e4e4e8;
+    --red: #e50914; --red-soft: #c40811;
+  }
+  html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6; -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, .brand { font-family: "Space Grotesk", -apple-system, sans-serif; }
+  a { color: var(--red-soft); }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 22px; }
+
+  /* nav */
+  header {
+    position: sticky; top: 0; z-index: 20;
+    padding-top: env(safe-area-inset-top, 0px);
+    background: color-mix(in srgb, var(--bg) 86%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  nav.wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; color: var(--text); text-decoration: none; }
+  .mark {
+    width: 30px; height: 30px; border-radius: 8px; background: #000;
+    border: 1.5px solid var(--red); display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 10px color-mix(in srgb, var(--red) 55%, transparent);
+  }
+  .mark svg { width: 13px; height: 13px; }
+  .navlinks { display: flex; gap: 22px; list-style: none; margin: 0; padding: 0; }
+  .navlinks a { color: var(--text-muted); text-decoration: none; font-size: 14.5px; }
+  .navlinks a:hover { color: var(--text); }
+  .navtoggle { display: none; background: none; border: 1px solid var(--border); border-radius: 8px; color: var(--text); width: 38px; height: 38px; font-size: 18px; }
+  @media (max-width: 640px) {
+    .navlinks { position: fixed; top: 64px; left: 0; right: 0; background: var(--bg); border-bottom: 1px solid var(--border);
+      flex-direction: column; padding: 14px 22px 20px; gap: 14px; display: none; }
+    .navlinks.open { display: flex; }
+    .navtoggle { display: block; }
+  }
+
+  /* hero */
+  .hero { padding: 72px 0 56px; text-align: center; }
+  .hero .mark-lg {
+    width: 76px; height: 76px; border-radius: 18px; background: #000; margin: 0 auto 22px;
+    border: 2px solid var(--red); display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 34px color-mix(in srgb, var(--red) 65%, transparent);
+    opacity: 0; animation: rise 0.6s ease-out forwards;
+  }
+  .hero .mark-lg svg { width: 32px; height: 32px; }
+  .hero h1 { font-size: clamp(32px, 6vw, 48px); font-weight: 700; margin: 0 0 14px; opacity: 0; animation: rise 0.6s ease-out 0.1s forwards; }
+  .hero p { color: var(--text-muted); font-size: 17px; max-width: 480px; margin: 0 auto; opacity: 0; animation: rise 0.6s ease-out 0.2s forwards; }
+  @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  @media (prefers-reduced-motion: reduce) {
+    .hero .mark-lg, .hero h1, .hero p { animation: none; opacity: 1; }
+  }
+
+  section { padding: 56px 0; border-top: 1px solid var(--border); }
+  section > .wrap > h2 { font-size: 24px; font-weight: 700; margin: 0 0 8px; }
+  .lede { color: var(--text-muted); font-size: 15.5px; margin: 0 0 32px; max-width: 560px; }
+
+  /* features */
+  .feature { display: flex; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--border); }
+  .feature:last-child { border-bottom: none; }
+  .feature .icon {
+    flex: none; width: 38px; height: 38px; border-radius: 9px; background: var(--surface);
+    border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--red-soft);
+  }
+  .feature h3 { margin: 2px 0 4px; font-size: 16px; font-weight: 700; }
+  .feature p { margin: 0; color: var(--text-muted); font-size: 14.5px; }
+
+  /* legal */
+  .legal p, .legal li { font-size: 15px; }
+  .legal h3 { font-size: 15.5px; font-weight: 700; margin: 26px 0 10px; }
+  .legal ol, .legal ul { padding-left: 20px; margin: 0 0 14px; }
+  .legal li { margin-bottom: 7px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin: 0 0 18px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 0 0 6px; }
+  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--border); }
+  th { color: var(--text-muted); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: .02em; }
+  .table-wrap { overflow-x: auto; }
+
+  /* contact */
+  .contact-box { display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+  .contact-box .card { flex: 1; min-width: 240px; }
+  .contact-box a { font-weight: 700; }
+
+  footer { padding: 32px 0 calc(32px + env(safe-area-inset-bottom, 0px)); color: var(--text-muted); font-size: 13px; text-align: center; border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <a class="brand" href="#top">
+      <span class="mark"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7z" fill="#e50914"/></svg></span>
+      Lussueki Clip
+    </a>
+    <button class="navtoggle" id="navToggle" aria-label="Abrir menu">☰</button>
+    <ul class="navlinks" id="navLinks">
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#privacidade">Privacidade</a></li>
+      <li><a href="#exclusao">Exclusão de conta</a></li>
+      <li><a href="#termos">Termos</a></li>
+      <li><a href="#contato">Contato</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div id="top" class="hero">
+  <div class="wrap">
+    <div class="mark-lg"><svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7z" fill="#e50914"/></svg></div>
+    <h1>Lussueki Clip</h1>
+    <p>Seu player de filmes e séries, com progresso salvo e favoritos sincronizados onde você parou.</p>
+  </div>
+</div>
+
+<section id="sobre">
+  <div class="wrap">
+    <h2>Sobre o app</h2>
+    <p class="lede">O que o Lussueki Clip faz, na prática.</p>
+
+    <div class="feature">
+      <div class="icon">▶</div>
+      <div><h3>Continue de onde parou</h3><p>O app lembra a posição exata de cada episódio, pra você nunca perder o fio da história.</p></div>
+    </div>
+    <div class="feature">
+      <div class="icon">★</div>
+      <div><h3>Favoritos</h3><p>Marque títulos pra encontrar rápido depois, sincronizado com sua conta.</p></div>
+    </div>
+    <div class="feature">
+      <div class="icon">🔒</div>
+      <div><h3>Conta própria</h3><p>Login simples por e-mail e senha, só pra manter seu histórico e favoritos salvos.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="privacidade" class="legal">
+  <div class="wrap">
+    <h2>Política de Privacidade</h2>
+    <p class="lede">Última atualização: 5 de outubro de 2026</p>
+
+    <p>Esta política descreve como o Lussueki Clip coleta, usa e protege as informações de quem usa o app.
+    Ao criar uma conta, você concorda com o que está descrito aqui.</p>
+
+    <h3>Responsável pelos dados</h3>
+    <p>O Lussueki Clip é desenvolvido e mantido por <strong>Seth Lussueki</strong>, como desenvolvedor independente.</p>
+
+    <h3>Dados que coletamos</h3>
+    <div class="card table-wrap">
+      <table>
+        <tr><th>Categoria</th><th>Dados</th><th>Finalidade</th></tr>
+        <tr><td>Conta</td><td>Nome, e-mail, senha (criptografada)</td><td>Criar e autenticar sua conta</td></tr>
+        <tr><td>Uso do app</td><td>Histórico de reprodução, favoritos</td><td>"Continuar assistindo", sincronizar listas</td></tr>
+        <tr><td>Técnicos</td><td>Dispositivo, versão do app, logs de erro</td><td>Diagnosticar falhas e melhorar estabilidade</td></tr>
+      </table>
+    </div>
+    <p>Não coletamos localização precisa, não processamos pagamentos e <strong>não exibimos anúncios</strong>.</p>
+
+    <h3>Compartilhamento</h3>
+    <p>Dados podem ser processados por: nosso serviço de hospedagem/backend (armazenamento de conta e histórico)
+    e o Google Play Services (distribuição e funcionamento do app). Não vendemos dados a terceiros nem
+    compartilhamos com anunciantes.</p>
+
+    <h3>Segurança e retenção</h3>
+    <p>Senhas ficam armazenadas de forma criptografada. Seus dados são mantidos enquanto a conta estiver ativa;
+    dados de contas inativas ou excluídas são removidos automaticamente em até 90 dias.</p>
+
+    <h3>Seus direitos</h3>
+    <ul>
+      <li>Acessar os dados que temos sobre você;</li>
+      <li>Corrigir informações de conta incorretas;</li>
+      <li>Solicitar a exclusão da conta e dos dados (veja a seção abaixo);</li>
+      <li>Sair da conta a qualquer momento, dentro do app.</li>
+    </ul>
+
+    <h3>Crianças</h3>
+    <p>O app não é direcionado a menores de 13 anos. Contas identificadas como criadas por crianças sem
+    consentimento dos responsáveis são removidas.</p>
+
+    <h3>Alterações</h3>
+    <p>Mudanças relevantes nesta política serão comunicadas no app. A data no topo desta seção é sempre
+    a mais recente.</p>
+  </div>
+</section>
+
+<section id="exclusao" class="legal">
+  <div class="wrap">
+    <h2>Eliminação de Conta e Dados</h2>
+    <p class="lede">Como pedir pra excluir sua conta do Lussueki Clip.</p>
+
+    <div class="card">
+      <ol>
+        <li>Envie um e-mail para <a href="mailto:sethlussueki@gmail.com">sethlussueki@gmail.com</a>,
+          a partir do mesmo endereço cadastrado na sua conta;</li>
+        <li>Use o assunto <strong>"Excluir minha conta"</strong> e informe o e-mail/usuário da conta;</li>
+        <li>O pedido é processado em até <strong>7 dias úteis</strong>, com confirmação por e-mail.</li>
+      </ol>
+    </div>
+
+    <h3>O que é eliminado</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Dado</th><th>Resultado</th></tr>
+        <tr><td>Nome, e-mail, senha</td><td>Eliminados permanentemente</td></tr>
+        <tr><td>Histórico de reprodução e favoritos</td><td>Eliminados permanentemente</td></tr>
+        <tr><td>Logs técnicos sem dado pessoal</td><td>Retidos por até 90 dias, depois eliminados</td></tr>
+      </table>
+    </div>
+    <p>Dados de contas inativas também são eliminados automaticamente em até 90 dias, mesmo sem pedido explícito.</p>
+  </div>
+</section>
+
+<section id="termos" class="legal">
+  <div class="wrap">
+    <h2>Termos de Uso</h2>
+    <p class="lede">Última atualização: 5 de outubro de 2026</p>
+
+    <h3>Uso do serviço</h3>
+    <p>Ao usar o Lussueki Clip, você concorda em usar o app apenas para fins pessoais e não comerciais,
+    e em manter suas credenciais de acesso em sigilo. Você é responsável por qualquer atividade realizada
+    na sua conta.</p>
+
+    <h3>Conteúdo</h3>
+    <p>O app reproduz conteúdo de vídeo a partir de fontes próprias ou de terceiros. Trabalhamos para manter
+    o catálogo disponível, mas a disponibilidade de um título específico pode mudar sem aviso prévio.</p>
+
+    <h3>Uso aceitável</h3>
+    <p>É proibido tentar contornar mecanismos de autenticação, extrair ou redistribuir conteúdo do app,
+    ou usar o serviço de forma que viole leis aplicáveis.</p>
+
+    <h3>Limitação de responsabilidade</h3>
+    <p>O app é fornecido "como está". Não garantimos disponibilidade ininterrupta do serviço e não nos
+    responsabilizamos por perdas decorrentes de indisponibilidade temporária.</p>
+
+    <h3>Alterações</h3>
+    <p>Estes termos podem ser atualizados periodicamente; o uso contínuo do app após uma alteração implica
+    aceitação dos novos termos.</p>
+  </div>
+</section>
+
+<section id="contato">
+  <div class="wrap">
+    <h2>Contato</h2>
+    <p class="lede">Dúvidas, suporte ou pedidos relacionados aos seus dados.</p>
+    <div class="contact-box">
+      <div class="card">
+        <h3 style="margin-top:0">E-mail</h3>
+        <a href="mailto:sethlussueki@gmail.com">sethlussueki@gmail.com</a>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Desenvolvedor</h3>
+        <p style="margin:0">Seth Lussueki — desenvolvedor independente</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>© 2026 Lussueki Clip. Todos os direitos reservados.</footer>
+
+<script>
+  var toggle = document.getElementById('navToggle');
+  var links = document.getElementById('navLinks');
+  toggle.addEventListener('click', function () {
+    links.classList.toggle('open');
+  });
+  links.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () { links.classList.remove('open'); });
+  });
+</script>
+
+</body>
+</html>
